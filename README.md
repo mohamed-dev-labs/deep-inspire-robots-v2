@@ -1,59 +1,68 @@
-# Deep Inspire Robots 🤖
+# Deep Inspire Robots 🤖🚀
 
-Deep Inspire Robots is a powerful Node.js CLI tool designed to act as an autonomous agent system. It integrates multiple AI providers (Google Gemini, OpenAI, Anthropic) and includes built-in tools for web searching and browsing.
+**Deep Inspire Robots** is a next-generation AI Agent System built with Node.js. It features a sophisticated **Agent Commander** that orchestrates a fleet of **30 specialized robots**, each with unique expertise, real-time web search, and virtual browsing capabilities.
 
-## Features
+## 🌟 Key Features
 
-- **Multi-Agent Support**: Use different AI models as your personal agents.
-- **Provider Integration**: Supports Google Gemini, OpenAI, and Anthropic.
-- **Web Tools**: Built-in search and browser capabilities using Puppeteer.
-- **CLI Interface**: Interactive terminal-based experience.
-- **Open Source**: Easy to clone, modify, and contribute.
+- **Agent Commander**: A central intelligence that analyzes tasks and delegates them to the most suitable robot.
+- **30 Specialized Robots**: A diverse fleet covering Search, Browsing, Coding, Security, Law, Finance, and more.
+- **Real-Time Web Search**: Integrated search tools to fetch live data from the internet.
+- **Virtual Browser**: Built-in Puppeteer-based browser for deep content extraction.
+- **Multi-Provider Support**: Seamless integration with Google Gemini, OpenAI, and Anthropic.
+- **Terminal-Native**: A powerful CLI experience designed for developers and power users.
 
-## Installation
+## 🛠 Installation
 
-### From NPM (Once published)
-```bash
-npm install -g deep-inspire-robots
-```
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or pnpm
 
-### From Source
-1. Clone the repository:
+### Setup from Source
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/YOUR_USERNAME/deep-inspire-robots.git
-   ```
-2. Install dependencies:
-   ```bash
    cd deep-inspire-robots
+   ```
+2. **Install dependencies**:
+   ```bash
    npm install
    ```
-3. Link the CLI tool:
+3. **Link the CLI**:
    ```bash
    npm link
    ```
 
-## Usage
+## 🚀 Usage
 
-### 1. Setup
-Configure your API keys and preferred models:
+### 1. Initial Setup
+Configure your Commander with your preferred AI provider and API key:
 ```bash
 deep-inspire setup
 ```
 
-### 2. Chat with Agent
-Start an interactive chat session:
+### 2. Run a Mission
+Let the Commander delegate your task to the right robot:
 ```bash
-deep-inspire chat "Hello, how can you help me today?"
+deep-inspire run "Search for the latest trends in AI agents 2026 and summarize them"
 ```
 
-### 3. Web Search
-Perform a web search directly from the terminal:
+### 3. List the Fleet
+View all 30 specialized robots and their roles:
 ```bash
-deep-inspire search "Latest AI trends 2026"
+deep-inspire list
 ```
 
-## Configuration
-API keys are stored locally in `config/user-config.json`. Never share this file or commit it to version control.
+## 🤖 The Fleet (30 Robots)
+Our fleet includes specialized agents like:
+- **SearchBot**: Real-time web searching.
+- **BrowserBot**: Website navigation and extraction.
+- **CoderBot**: Advanced programming and debugging.
+- **SecurityBot**: Cybersecurity analysis.
+- **AnalystBot**: Data pattern recognition.
+- ... and 25 more!
 
-## License
-MIT
+## 📜 License
+MIT License. Free for open-source use and contributions.
+
+---
+Built with ❤️ by Deep Inspire Team.
