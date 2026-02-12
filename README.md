@@ -1,68 +1,79 @@
 # Deep Inspire Robots 🤖🚀
 
-**Deep Inspire Robots** is a next-generation AI Agent System built with Node.js. It features a sophisticated **Agent Commander** that orchestrates a fleet of **30 specialized robots**, each with unique expertise, real-time web search, and virtual browsing capabilities.
+![Deep Inspire Robots Logo](logo.png)
 
-## 🌟 Key Features
+**Deep Inspire Robots** is a high-performance, open-source AI Agent System built as a Node.js CLI terminal application. It features a sophisticated **Agent Commander** that orchestrates a fleet of **30 specialized robots**, each with unique expertise, real-time web search, and virtual browsing capabilities.
 
-- **Agent Commander**: A central intelligence that analyzes tasks and delegates them to the most suitable robot.
+## 🌟 Overview
+
+Inspired by the power of autonomous agents like OpenCloud, Deep Inspire Robots allows any user to run a local AI agency. By providing your own API keys (Google Gemini, OpenAI, or Anthropic), you activate a commander that can learn, understand context, and delegate complex tasks to specialized sub-agents.
+
+## 🚀 Key Features
+
+- **Agent Commander**: The central brain that analyzes user requests and selects the best robot for the job.
 - **30 Specialized Robots**: A diverse fleet covering Search, Browsing, Coding, Security, Law, Finance, and more.
 - **Real-Time Web Search**: Integrated search tools to fetch live data from the internet.
-- **Virtual Browser**: Built-in Puppeteer-based browser for deep content extraction.
-- **Multi-Provider Support**: Seamless integration with Google Gemini, OpenAI, and Anthropic.
-- **Terminal-Native**: A powerful CLI experience designed for developers and power users.
+- **Virtual Browser**: Built-in Puppeteer-based browser for deep content extraction and terminal-based navigation.
+- **Local & Private**: Your API keys and configurations are saved locally on your machine.
+- **Multi-Model Support**: Switch seamlessly between Gemini, GPT-4o, and Claude 3.5.
 
-## 🛠 Installation
+## 🛠 Installation & Setup
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or pnpm
+### 1. Clone the Repository
+```bash
+git clone https://github.com/YOUR_USERNAME/deep-inspire-robots.git
+cd deep-inspire-robots
+```
 
-### Setup from Source
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/deep-inspire-robots.git
-   cd deep-inspire-robots
-   ```
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Link the CLI**:
-   ```bash
-   npm link
-   ```
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-## 🚀 Usage
+### 3. Link the CLI Tool
+```bash
+npm link
+```
 
-### 1. Initial Setup
-Configure your Commander with your preferred AI provider and API key:
+### 4. Initialize the Commander
+Run the setup command to configure your AI provider and API key:
 ```bash
 deep-inspire setup
 ```
 
-### 2. Run a Mission
-Let the Commander delegate your task to the right robot:
+## 🤖 The Fleet (30 Specialized Robots)
+
+Use `deep-inspire list` to see the full fleet. Key robots include:
+- **SearchBot**: Real-time web searching and data retrieval.
+- **BrowserBot**: Navigating websites and extracting deep content.
+- **CoderBot**: Writing, debugging, and explaining code.
+- **SecurityBot**: Cybersecurity assessment and vulnerability checks.
+- **AnalystBot**: Data analysis and pattern recognition.
+- **ResearcherBot**: Deep academic and technical research.
+- **LawBot**: Legal document analysis and compliance.
+- **FinanceBot**: Market analysis and financial forecasting.
+- ... and 22 more!
+
+## 🎮 Usage Examples
+
+### Run a Mission (Delegation)
+Let the Commander decide which robot to use:
 ```bash
-deep-inspire run "Search for the latest trends in AI agents 2026 and summarize them"
+deep-inspire run "Search for the rarest types of robots in the world and summarize their features"
 ```
 
-### 3. List the Fleet
-View all 30 specialized robots and their roles:
+### Direct Search
+```bash
+deep-inspire search "Latest AI breakthroughs Feb 2026"
+```
+
+### List All Robots
 ```bash
 deep-inspire list
 ```
 
-## 🤖 The Fleet (30 Robots)
-Our fleet includes specialized agents like:
-- **SearchBot**: Real-time web searching.
-- **BrowserBot**: Website navigation and extraction.
-- **CoderBot**: Advanced programming and debugging.
-- **SecurityBot**: Cybersecurity analysis.
-- **AnalystBot**: Data pattern recognition.
-- ... and 25 more!
-
 ## 📜 License
-MIT License. Free for open-source use and contributions.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-Built with ❤️ by Deep Inspire Team.
+Built with ❤️ by the Deep Inspire Team. Empowering the terminal with AI Agents.
