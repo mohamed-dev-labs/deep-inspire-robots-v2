@@ -36,7 +36,8 @@ export class BaseAgent {
             });
             return response.choices[0].message.content;
         } else if (provider === 'google') {
-            const genModel = this.client.getGenerativeModel({ model: model || 'gemini-1.5-flash' });
+            const modelName = model.includes('models/') ? model : `models/${model}`;
+            const genModel = this.client.getGenerativeModel({ model: modelName || 'models/gemini-1.5-flash' });
             const result = await genModel.generateContent(message);
             return result.response.text();
         } else if (provider === 'anthropic') {

@@ -12,26 +12,36 @@ const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
 
 program
     .name('deep-inspire')
-    .description('Deep Inspire Robots: The Ultimate AI Agent System')
-    .version('2.0.0');
+    .description('Deep Inspire Robots: Hybrid AI Agent System')
+    .version('3.0.0');
 
 program
     .command('setup')
-    .description('Initialize the Commander and configure AI providers')
+    .description('Initialize the Commander and configure Hybrid Layers')
     .action(async () => {
-        console.log(chalk.bold.cyan('\n--- Deep Inspire Robots Setup ---'));
+        console.log(chalk.bold.cyan('\n--- Deep Inspire Robots Hybrid Setup ---'));
         const answers = await inquirer.prompt([
             {
                 type: 'list',
+                name: 'version',
+                message: 'Select Operation Mode (Versioning):',
+                choices: [
+                    'Version 1: Baseline (Local First)',
+                    'Version 2: Balanced (Hybrid)',
+                    'Version 3: Advanced (Cloud Intensive)'
+                ],
+            },
+            {
+                type: 'list',
                 name: 'provider',
-                message: 'Select Primary AI Provider (Commander):',
+                message: 'Select Strategic Cloud Provider:',
                 choices: ['google', 'openai', 'anthropic'],
             },
             {
                 type: 'input',
                 name: 'model',
-                message: 'Enter AI Model Name:',
-                default: (ans) => ans.provider === 'google' ? 'gemini-1.5-flash' : (ans.provider === 'openai' ? 'gpt-4o' : 'claude-3-5-sonnet-20240620'),
+                message: 'Enter Model Name (e.g. gemini-1.5-flash):',
+                default: (ans) => ans.provider === 'google' ? 'gemini-1.5-flash' : 'gpt-4o',
             },
             {
                 type: 'password',
@@ -44,45 +54,44 @@ program
             fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(answers, null, 2));
-        console.log(chalk.green('\n✅ Setup Successful! Your Agent Commander is ready.'));
+        console.log(chalk.green('\n✅ Hybrid System Initialized! Ready for deployment.'));
     });
 
 program
     .command('run')
-    .description('Execute a task using the Agent Commander and its 30 Robots')
+    .description('Execute a mission through the Orchestration Layer')
     .argument('<task...>', 'Task description')
     .action(async (taskArray) => {
         const task = taskArray.join(' ');
         if (!fs.existsSync(CONFIG_PATH)) {
-            console.log(chalk.red('❌ Error: Please run "deep-inspire setup" first.'));
+            console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup".'));
             return;
         }
 
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
 
-        // تسجيل الـ 30 روبوت
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
         });
 
-        console.log(chalk.blue(`\n🚀 Mission started: ${task}`));
+        console.log(chalk.blue(`\n🚀 Deploying Mission: ${task}`));
         try {
             const result = await commander.delegateTask(task);
             console.log(chalk.green('\n--- Mission Report ---'));
             console.log(result);
         } catch (error) {
-            console.log(chalk.red('\n❌ Mission Failed:'), error.message);
+            console.log(chalk.red('\n❌ Critical Failure:'), error.message);
         }
     });
 
 program
     .command('list')
-    .description('List all 30 specialized robots and their expertise')
+    .description('List the 30 Sub-Agents and their Layers')
     .action(() => {
-        console.log(chalk.bold.magenta('\n--- Deep Inspire: The 30 Robots Fleet ---'));
+        console.log(chalk.bold.magenta('\n--- Deep Inspire: Sub-Agent Layer Fleet ---'));
         ROBOT_DEFINITIONS.forEach((def, index) => {
-            console.log(`${chalk.yellow(index + 1 + '.')} ${chalk.bold(def.name)}: ${def.expertise}`);
+            console.log(`${chalk.yellow(index + 1 + '.')} [${def.layer}] ${chalk.bold(def.name)}: ${def.expertise}`);
         });
     });
 
