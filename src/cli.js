@@ -6,25 +6,27 @@ import fs from 'fs';
 import path from 'path';
 import { AgentCommander } from './agents/AgentCommander.js';
 import { SpecializedRobot, ROBOT_DEFINITIONS } from './agents/SpecializedRobots.js';
+import { ModelManager } from './utils/ModelManager.js';
+import { WhatsAppBridge } from './tools/WhatsAppBridge.js';
 
 const program = new Command();
 const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
 
 program
     .name('deep-inspire')
-    .description('Deep Inspire Robots: Hybrid AI Agent System')
-    .version('3.0.0');
+    .description('Deep Inspire Robots: Hybrid AI Agent System with WhatsApp Bridge')
+    .version('3.5.0');
 
 program
     .command('setup')
-    .description('Initialize the Commander and configure Hybrid Layers')
+    .description('Initialize Commander, Local Models, and API Keys')
     .action(async () => {
         console.log(chalk.bold.cyan('\n--- Deep Inspire Robots Hybrid Setup ---'));
         const answers = await inquirer.prompt([
             {
                 type: 'list',
                 name: 'version',
-                message: 'Select Operation Mode (Versioning):',
+                message: 'Select Operation Mode:',
                 choices: [
                     'Version 1: Baseline (Local First)',
                     'Version 2: Balanced (Hybrid)',
@@ -54,12 +56,36 @@ program
             fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(answers, null, 2));
-        console.log(chalk.green('\n✅ Hybrid System Initialized! Ready for deployment.'));
+        
+        // تنزيل النماذج المحلية تلقائياً
+        await ModelManager.setupLocalModels(answers.version);
+        
+        console.log(chalk.green('\n✅ System Initialized! Your Commander is ready for Local, VPS, and WhatsApp use.'));
+    });
+
+program
+    .command('whatsapp')
+    .description('Start the WhatsApp Bridge with QR Code Authentication')
+    .action(async () => {
+        if (!fs.existsSync(CONFIG_PATH)) {
+            console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup" first.'));
+            return;
+        }
+
+        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+        const commander = new AgentCommander(config);
+        
+        ROBOT_DEFINITIONS.forEach(def => {
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+        });
+
+        const bridge = new WhatsAppBridge(commander);
+        await bridge.init();
     });
 
 program
     .command('run')
-    .description('Execute a mission through the Orchestration Layer')
+    .description('Execute a mission through the CLI')
     .argument('<task...>', 'Task description')
     .action(async (taskArray) => {
         const task = taskArray.join(' ');
@@ -83,16 +109,6 @@ program
         } catch (error) {
             console.log(chalk.red('\n❌ Critical Failure:'), error.message);
         }
-    });
-
-program
-    .command('list')
-    .description('List the 30 Sub-Agents and their Layers')
-    .action(() => {
-        console.log(chalk.bold.magenta('\n--- Deep Inspire: Sub-Agent Layer Fleet ---'));
-        ROBOT_DEFINITIONS.forEach((def, index) => {
-            console.log(`${chalk.yellow(index + 1 + '.')} [${def.layer}] ${chalk.bold(def.name)}: ${def.expertise}`);
-        });
     });
 
 program.parse(process.argv);

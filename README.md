@@ -2,26 +2,22 @@
 
 ![Deep Inspire Robots Logo](logo.png)
 
-**Deep Inspire Robots** is a high-performance, open-source AI Agent System built as a Node.js CLI terminal application. It features a sophisticated **Agent Commander** that orchestrates a fleet of **30 specialized robots**, each with unique expertise, real-time web search, and virtual browsing capabilities.
+**Deep Inspire Robots** is a high-performance, hybrid AI Agent System built as a Node.js CLI terminal application. It features a sophisticated **Agent Commander** that orchestrates a fleet of **30 specialized robots**, integrated **WhatsApp Bridge**, and support for **Local Models** (Llama, DeepSeek, Qwen).
 
-## 🌟 Overview
+## 🌟 Key Features
 
-Inspired by the power of autonomous agents like OpenCloud, Deep Inspire Robots allows any user to run a local AI agency. By providing your own API keys (Google Gemini, OpenAI, or Anthropic), you activate a commander that can learn, understand context, and delegate complex tasks to specialized sub-agents.
-
-## 🚀 Key Features
-
-- **Agent Commander**: The central brain that analyzes user requests and selects the best robot for the job.
-- **30 Specialized Robots**: A diverse fleet covering Search, Browsing, Coding, Security, Law, Finance, and more.
-- **Real-Time Web Search**: Integrated search tools to fetch live data from the internet.
-- **Virtual Browser**: Built-in Puppeteer-based browser for deep content extraction and terminal-based navigation.
-- **Local & Private**: Your API keys and configurations are saved locally on your machine.
-- **Multi-Model Support**: Switch seamlessly between Gemini, GPT-4o, and Claude 3.5.
+- **Agent Commander**: Strategic orchestration and planning layer.
+- **30 Specialized Sub-Agents**: Covering Vision, Code, Search, Security, and more.
+- **WhatsApp Bridge**: Control your AI agents via WhatsApp with QR code authentication.
+- **Local Model Manager**: Automatically pulls and configures local models (Llama 3, DeepSeek Coder, Qwen) for cost-effective execution.
+- **VPS Ready**: Optimized for deployment on Linux servers for 24/7 operation.
+- **Hybrid Intelligence**: Combines the power of Cloud models (Gemini, OpenAI, Anthropic) with the privacy of Local models.
 
 ## 🛠 Installation & Setup
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/deep-inspire-robots.git
+git clone https://github.com/mohamed-dev-labs/deep-inspire-robots-v2.git
 cd deep-inspire-robots
 ```
 
@@ -35,45 +31,30 @@ npm install
 npm link
 ```
 
-### 4. Initialize the Commander
-Run the setup command to configure your AI provider and API key:
+### 4. Hybrid Setup (Includes Local Models)
+Run the setup command to configure your AI provider and automatically pull local models:
 ```bash
 deep-inspire setup
 ```
 
-## 🤖 The Fleet (30 Specialized Robots)
+## 📱 WhatsApp Integration
 
-Use `deep-inspire list` to see the full fleet. Key robots include:
-- **SearchBot**: Real-time web searching and data retrieval.
-- **BrowserBot**: Navigating websites and extracting deep content.
-- **CoderBot**: Writing, debugging, and explaining code.
-- **SecurityBot**: Cybersecurity assessment and vulnerability checks.
-- **AnalystBot**: Data analysis and pattern recognition.
-- **ResearcherBot**: Deep academic and technical research.
-- **LawBot**: Legal document analysis and compliance.
-- **FinanceBot**: Market analysis and financial forecasting.
-- ... and 22 more!
+To control Deep Inspire from your phone:
+1. Run the bridge command:
+   ```bash
+   deep-inspire whatsapp
+   ```
+2. **Scan the QR Code** that appears in your terminal using your WhatsApp.
+3. Send a message to yourself or the bot starting with: `Run deep inspire [your task here]`.
 
-## 🎮 Usage Examples
+## 🤖 Sub-Agent Layers
 
-### Run a Mission (Delegation)
-Let the Commander decide which robot to use:
-```bash
-deep-inspire run "Search for the rarest types of robots in the world and summarize their features"
-```
-
-### Direct Search
-```bash
-deep-inspire search "Latest AI breakthroughs Feb 2026"
-```
-
-### List All Robots
-```bash
-deep-inspire list
-```
+- **Strategic Layer**: Commander Agent (Planning & Reasoning).
+- **Sub-Agent Layer**: 30 Specialized Robots (Execution).
+- **Execution Layer**: Local/Cloud Model Abstraction.
 
 ## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License. Built for the open-source community.
 
 ---
-Built with ❤️ by the Deep Inspire Team. Empowering the terminal with AI Agents.
+Built with ❤️ by the Deep Inspire Team. Empowering the terminal and messaging apps with AI Agents.
