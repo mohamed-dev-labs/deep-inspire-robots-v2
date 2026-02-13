@@ -1,13 +1,10 @@
 import puppeteer from 'puppeteer';
-import axios from 'axios';
 import chalk from 'chalk';
 
 export class WebTool {
     static async search(query) {
-        console.log(chalk.yellow(`[WebTool] Performing real-time search for: "${query}"`));
+        console.log(chalk.yellow(`\n[WebTool] Performing real-time deep search for: "${query}"`));
         try {
-            // استخدام Google Search عبر محرك بحث مخصص أو API
-            // هنا نستخدم نموذجاً للبحث عبر scraping بسيط أو API إذا توفرت
             const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
             return await this.browse(searchUrl, true);
         } catch (error) {
@@ -16,10 +13,11 @@ export class WebTool {
     }
 
     static async browse(url, isSearch = false) {
-        console.log(chalk.blue(`[WebTool] Opening virtual browser for: ${url}`));
+        console.log(chalk.blue(`[WebTool] Opening virtual browser (HEADFUL MODE) for: ${url}`));
         
+        // تم تغيير headless إلى false لعرض المتصفح للمستخدم
         const browser = await puppeteer.launch({
-            headless: "new",
+            headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         
@@ -46,15 +44,17 @@ export class WebTool {
                 content = await page.evaluate(() => {
                     return document.body.innerText.split('\n')
                         .filter(line => line.trim().length > 20)
-                        .slice(0, 50)
+                        .slice(0, 100)
                         .join('\n');
                 });
             }
 
+            // نترك المتصفح مفتوحاً لثوانٍ قليلة ليتمكن المستخدم من المشاهدة
+            await new Promise(resolve => setTimeout(resolve, 5000));
             await browser.close();
             return content || "No content could be extracted.";
         } catch (error) {
-            await browser.close();
+            if (browser) await browser.close();
             return `Browsing failed: ${error.message}`;
         }
     }

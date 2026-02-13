@@ -13,7 +13,12 @@ export class BaseAgent {
         const { provider, apiKey } = this.config;
         switch (provider) {
             case 'openai':
-                this.client = new OpenAI({ apiKey });
+                // إذا كان المزود openai ولم يتم توفير مفتاح، نستخدم الإعدادات الافتراضية لمانوس
+                if (!apiKey || apiKey === "MANUS_DEFAULT") {
+                    this.client = new OpenAI();
+                } else {
+                    this.client = new OpenAI({ apiKey });
+                }
                 break;
             case 'google':
                 this.client = new GoogleGenerativeAI(apiKey);
@@ -31,7 +36,7 @@ export class BaseAgent {
         
         if (provider === 'openai') {
             const response = await this.client.chat.completions.create({
-                model: model || 'gpt-4o',
+                model: model || 'gpt-4.1-mini',
                 messages: [...history, { role: 'user', content: message }],
             });
             return response.choices[0].message.content;

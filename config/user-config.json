@@ -1,1 +1,7 @@
-{"provider": "google", "model": "gemini-1.5-flash", "apiKey": "AIzaSyBz4Bv4Yfkp5w0ouNx8V5zuyJRfrihDsQU"}
+{
+    "provider": "openai",
+    "model": "gpt-4.1-mini",
+    "apiKey": "MANUS_DEFAULT",
+    "version": "Version 3: Advanced (Cloud Intensive)",
+    "telegramToken": ""
+}

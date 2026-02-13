@@ -8,14 +8,15 @@ import { AgentCommander } from './agents/AgentCommander.js';
 import { SpecializedRobot, ROBOT_DEFINITIONS } from './agents/SpecializedRobots.js';
 import { ModelManager } from './utils/ModelManager.js';
 import { WhatsAppBridge } from './tools/WhatsAppBridge.js';
+import { TelegramBridge } from './tools/TelegramBridge.js';
 
 const program = new Command();
 const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
 
 program
     .name('deep-inspire')
-    .description('Deep Inspire Robots: Hybrid AI Agent System with WhatsApp Bridge')
-    .version('3.5.0');
+    .description('Deep Inspire Robots: Hybrid AI Agent System with WhatsApp & Telegram Bridge')
+    .version('4.0.0');
 
 program
     .command('setup')
@@ -48,7 +49,12 @@ program
             {
                 type: 'password',
                 name: 'apiKey',
-                message: 'Enter your API Key:',
+                message: 'Enter your AI API Key:',
+            },
+            {
+                type: 'password',
+                name: 'telegramToken',
+                message: 'Enter your Telegram Bot Token (from BotFather) [Optional]:',
             }
         ]);
 
@@ -57,15 +63,38 @@ program
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(answers, null, 2));
         
-        // تنزيل النماذج المحلية تلقائياً
         await ModelManager.setupLocalModels(answers.version);
         
-        console.log(chalk.green('\n✅ System Initialized! Your Commander is ready for Local, VPS, and WhatsApp use.'));
+        console.log(chalk.green('\n✅ System Initialized! Your Commander is ready for Local, VPS, WhatsApp, and Telegram use.'));
+    });
+
+program
+    .command('telegram')
+    .description('Start the Telegram Bridge')
+    .action(async () => {
+        if (!fs.existsSync(CONFIG_PATH)) {
+            console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup" first.'));
+            return;
+        }
+
+        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+        if (!config.telegramToken) {
+            console.log(chalk.red('❌ Error: Telegram Token not found in config. Run "deep-inspire setup" to add it.'));
+            return;
+        }
+
+        const commander = new AgentCommander(config);
+        ROBOT_DEFINITIONS.forEach(def => {
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+        });
+
+        const bridge = new TelegramBridge(commander, config.telegramToken);
+        bridge.init();
     });
 
 program
     .command('whatsapp')
-    .description('Start the WhatsApp Bridge with QR Code Authentication')
+    .description('Start the WhatsApp Bridge')
     .action(async () => {
         if (!fs.existsSync(CONFIG_PATH)) {
             console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup" first.'));
@@ -74,7 +103,6 @@ program
 
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
-        
         ROBOT_DEFINITIONS.forEach(def => {
             commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
         });
