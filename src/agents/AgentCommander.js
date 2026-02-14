@@ -5,8 +5,8 @@ export class AgentCommander extends BaseAgent {
     constructor(config) {
         super(config);
         this.robots = new Map();
-        this.name = "Commander-In-Chief";
-        this.version = config.version || "Version 3 (Advanced)";
+        this.name = "Deep Inspire AI Agent Commander (Slime Agent Edition)";
+        this.version = "V5.1";
     }
 
     registerRobot(name, robotInstance) {
@@ -14,20 +14,24 @@ export class AgentCommander extends BaseAgent {
     }
 
     async delegateTask(taskDescription) {
-        console.log(chalk.magenta(`[${this.name}] [${this.version}] Orchestrating Mission: ${taskDescription}`));
+        console.log(chalk.bold.green(`\n[${this.name}] [${this.version}]`));
+        console.log(chalk.cyan(`[Thinking Architecture] Analyzing Mission: "${taskDescription}"`));
         
-        // طبقة التخطيط (Planning Layer)
+        // طبقة التخطيط المتقدمة (Advanced Planning Layer)
         const planningPrompt = `
-        You are the Strategic Commander of an AI Agent System.
-        Goal: "${taskDescription}"
+        You are the Strategic Commander (Slime Agent).
+        Mission Goal: "${taskDescription}"
         Available Sub-Agents: ${Array.from(this.robots.keys()).join(', ')}.
         
-        Analyze the goal and return a JSON execution plan:
+        Deconstruct this mission into a highly efficient multi-step execution plan.
+        For each step, assign the most capable specialized robot.
+        
+        Return a JSON execution plan:
         {
           "steps": [
-            {"agent": "AgentName", "task": "specific sub-task instruction"}
+            {"agent": "AgentName", "task": "detailed instruction for the robot"}
           ],
-          "reasoning": "why this plan?"
+          "reasoning": "Strategic explanation of this approach"
         }
         Return ONLY valid JSON.
         `;
@@ -36,33 +40,34 @@ export class AgentCommander extends BaseAgent {
             const planResponse = await this.chat(planningPrompt);
             const plan = JSON.parse(planResponse.replace(/```json|```/g, '').trim());
             
-            console.log(chalk.blue(`[${this.name}] Execution Plan Created: ${plan.reasoning}`));
+            console.log(chalk.blue(`[Commander Reasoning] ${plan.reasoning}`));
             
             let finalResults = [];
             for (const step of plan.steps) {
                 const robot = this.robots.get(step.agent);
                 if (robot) {
-                    console.log(chalk.cyan(`[Step] Delegating to ${step.agent}: ${step.task}`));
+                    console.log(chalk.magenta(`\n[Orchestration] Deploying ${step.agent} for: ${step.task}`));
                     const result = await robot.execute(step.task);
-                    finalResults.push(`[${step.agent}]: ${result}`);
+                    finalResults.push(`### [Report from ${step.agent}]\n${result}`);
                 }
             }
 
-            // تجميع النتائج (Synthesis)
+            // تجميع النتائج النهائي (Final Synthesis)
             const synthesisPrompt = `
-            Summarize the final outcome based on these execution steps:
+            Compile a comprehensive and professional mission report based on these individual robot results:
             ${finalResults.join('\n\n')}
-            Original Goal: ${taskDescription}
+            
+            Original Mission: ${taskDescription}
+            Ensure the report is structured, factual, and addresses all parts of the mission.
             `;
             return await this.chat(synthesisPrompt);
 
         } catch (error) {
-            console.log(chalk.yellow(`[${this.name}] Plan parsing failed or error occurred. Falling back to direct execution.`));
-            // البحث عن أنسب روبوت بشكل مباشر في حال فشل التخطيط المعقد
-            const decisionPrompt = `Which robot is best for: "${taskDescription}"? Available: ${Array.from(this.robots.keys()).join(', ')}. Return ONLY name.`;
+            console.log(chalk.yellow(`[Commander] Advanced planning encountered an issue. Falling back to sequential execution.`));
+            const decisionPrompt = `Select the single best robot for: "${taskDescription}" from: ${Array.from(this.robots.keys()).join(', ')}. Return ONLY the robot name.`;
             const selectedRobotName = await this.chat(decisionPrompt);
-            const robot = this.robots.get(selectedRobotName.trim());
-            return robot ? await robot.execute(taskDescription) : await this.chat(taskDescription);
+            const robot = this.robots.get(selectedRobotName.trim()) || this.robots.get('ResearcherBot');
+            return await robot.execute(taskDescription);
         }
     }
 }

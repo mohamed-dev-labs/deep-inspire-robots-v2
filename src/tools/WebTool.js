@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 export class WebTool {
     static async search(query) {
-        console.log(chalk.yellow(`\n[WebTool] Performing real-time deep search for: "${query}"`));
+        console.log(chalk.yellow(`\n[WebTool] 🔍 Searching: "${query}"`));
         try {
             const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
             return await this.browse(searchUrl, true);
@@ -13,22 +13,26 @@ export class WebTool {
     }
 
     static async browse(url, isSearch = false) {
-        console.log(chalk.blue(`[WebTool] Opening virtual browser (HEADFUL MODE) for: ${url}`));
+        console.log(chalk.blue(`[WebTool] 🌐 Opening Browser (VISIBLE MODE) for: ${url}`));
         
-        // تم تغيير headless إلى false لعرض المتصفح للمستخدم
+        // التأكد من أن headless: false ليكون المتصفح مرئياً للمستخدم
         const browser = await puppeteer.launch({
             headless: false,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            defaultViewport: { width: 1280, height: 800 },
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox',
+                '--window-size=1280,800'
+            ]
         });
         
         const page = await browser.newPage();
         try {
-            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-            await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36');
+            await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
             let content;
             if (isSearch) {
-                // استخراج نتائج البحث من جوجل
                 content = await page.evaluate(() => {
                     const results = [];
                     document.querySelectorAll('div.g').forEach(el => {
@@ -40,17 +44,16 @@ export class WebTool {
                     return JSON.stringify(results.slice(0, 5), null, 2);
                 });
             } else {
-                // استخراج النص الأساسي من الصفحة
                 content = await page.evaluate(() => {
                     return document.body.innerText.split('\n')
                         .filter(line => line.trim().length > 20)
-                        .slice(0, 100)
+                        .slice(0, 150)
                         .join('\n');
                 });
             }
 
-            // نترك المتصفح مفتوحاً لثوانٍ قليلة ليتمكن المستخدم من المشاهدة
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            // إبقاء المتصفح مفتوحاً لثوانٍ ليتمكن المستخدم من المتابعة
+            await new Promise(resolve => setTimeout(resolve, 8000));
             await browser.close();
             return content || "No content could be extracted.";
         } catch (error) {
